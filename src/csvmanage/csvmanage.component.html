@@ -1,0 +1,20 @@
+<p>csvmanage</p>
+<br>
+<a ui-sref="home">home</a>
+<br>
+<br>
+<!-- <form ng-submit="$ctrl.grabCsv()">
+  <input id="csvFile" type="file" accept=".csv" ng-model="$ctrl.csvData" />
+  <br>
+  <button type="submit">Upload</button>
+</form> -->
+<ng-csv-import content="csv.content"
+    material
+    md-button-class="md-icon-button md-raised md-accent"
+    md-svg-icon="file:ic_file_upload_24px"
+    header="csv.header"
+    separator="csv.separator"
+    result="csv.result"
+    accept=".csv"></ng-csv-import>
+<br>
+<button ng-click="$ctrl.manipData()">Upload</button>

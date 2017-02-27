@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html ng-app="app">
+  <head>
+    <base href="/">
+    <meta charset="utf-8">
+    <title>RegressionDev</title>
+  </head>
+  <body ng-app="app">
+
+    <script src="/node_modules/angular/angular.min.js"></script>
+    <script src="/node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="/node_modules/angular-csv-import/dist/angular-csv-import.js"></script>
+
+    <ui-view></ui-view>
+    <!-- <home></home> -->
+
+    <footer>
+      <p>kevin cowley</p>
+    </footer>
+
+    <script type="text/javascript" src="./src/app.module.js"></script>
+    <script type="text/javascript" src="./src/app.config.js"></script>
+    <script type="text/javascript" src="./src/home/home.component.js"></script>
+    <script type="text/javascript" src="./src/csvmanage/csvmanage.component.js"></script>
+    <script type="text/javascript" src="./src/services/filesystem.service.js"></script>
+
+  </body>
+</html>
