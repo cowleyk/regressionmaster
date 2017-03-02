@@ -5,8 +5,20 @@
 <a ui-sref="csvmanage">csvmanage</a>
 <br>
 <br>
-<div class="container">
-  <div class="twelve columns" ng-repeat="var in $ctrl.matrixObj.variables">
-    {{var}}: {{bhat[0]}}
+
+<!-- table for overall regression -->
+<div class="container" style="border:1px solid black; padding:5px;">
+  <div ng-class="{highlight: $ctrl.f0 < $ctrl.f0Table}">
+  f0: {{$ctrl.f0}}
+  f0Table: {{$ctrl.f0Table}}
+  </div>
+</div>
+<br>
+<!-- table for dependent variable analysis -->
+<div class="container" style="border:1px solid black; padding:5px;">
+  <div class="twelve columns" ng-repeat="var in $ctrl.tableArr">
+    {{var.name}}: {{var.bHat}}
+    <br>
+    {{var.bHat/var.sebHatj}}
   </div>
 </div>

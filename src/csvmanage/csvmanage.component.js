@@ -61,10 +61,12 @@
     vm.setSelection = function(){
 
       let indIndex = headerArr.indexOf(vm.independent);
+      let depNameArr = ['constant'];
       let depIndex = [];
       vm.variables.forEach(function(elem){
         if(elem.dependent){
           depIndex.push(headerArr.indexOf(elem.name));
+          depNameArr.push(elem.name);
         }
       });
       for(let key in csvObj){
@@ -78,8 +80,19 @@
       let xPrXinv = math.inv(math.multiply(math.transpose(depMatrix), depMatrix));
       let xPrY = math.multiply(math.transpose(depMatrix), indMatrix);
       let bHat = math.multiply(xPrXinv, xPrY);
+      let sse = math.multiply(math.transpose(indMatrix),indMatrix) - math.multiply(math.transpose(bHat), math.multiply(math.transpose(depMatrix), indMatrix));
+      let sumY = 0;
+      indMatrix.forEach(function(elem){
+        sumY += parseFloat(elem[0]);
+      });
+      let ssr = math.multiply(math.transpose(bHat), math.multiply(math.transpose(depMatrix), indMatrix))-(sumY*sumY)/(Object.keys(csvObj).length);
+      let sst = sse + ssr;
+
+
+
       let matrixObj = {
         'variables': headerArr,
+        'depVariables': depNameArr,
         'C': xPrXinv,
         'bHat': bHat,
         'X': depMatrix,
@@ -87,12 +100,12 @@
         'n': Object.keys(csvObj).length,
         'k': depIndex.length,
         'p': depIndex.length+1,
+        'sse': sse,
+        'ssr': ssr,
+        'sst': sst
+        // TODO create array of dependent variables [constant, x1, x2 ...]
       };
-      console.log(matrixObj);
-      // TODO $state.go to regression component
-      // pass along depMatrix, indMatrix
       $state.go("regression", {matrixObj: matrixObj});
-      // $state.go('regression', {matrixObj: matrixObj})
 
       };
 
@@ -106,68 +119,3 @@
 
 
 })();
-
-
-
-
-
-
-// var _lastGoodResult = '';
-// vm.toPrettyJSON = function (json, tabWidth) {
-// 	var objStr = JSON.stringify(json);
-// 	var obj = null;
-// 	try {
-// 		obj = $parse(objStr)({});
-// 	} catch(e){
-// 		// eat $parse error
-//     console.log(_lastGoodResult);
-// 		return _lastGoodResult;
-// 	}
-//
-// 	var result = JSON.stringify(obj, null, Number(tabWidth));
-// 	_lastGoodResult = result;
-//
-// 	return result;
-// };
-
-// csvmanageController.$inject = ['$http', '$state', 'ngCsvImport'];
-//
-// function csvmanageController($http, $state, ngCsvImport){
-//   const vm = this;
-//   console.log('csvmanageController');
-//
-//   // vm.csv = {
-//   // 	content: null,
-//   // 	header: true,
-//   // 	headerVisible: true,
-//   // 	separator: ',',
-//   // 	separatorVisible: true,
-//   // 	result: null,
-//   // 	encoding: 'ISO-8859-1',
-//   // 	encodingVisible: false,
-//   //   uploadButtonLabel: "upload a csv file"
-//   // };
-//
-//   vm.$onInit = function(){
-//     console.log('$onInit fired');
-//   };
-//
-//   vm.grabCsv = function(){
-//     console.log('uploadButton');
-//     console.log(vm.csvData);
-//     console.log(document.getElementById("csvFile").value);
-//     console.log(typeof document.getElementById("csvFile").value);
-//     let file = document.getElementById("csvFile").value;
-//     // filesystem.fileRead(file);
-//     filesystem.fs.readFile(file, function(err, data){
-//       if(err){
-//         console.log(err);
-//       }
-//       console.log(data);
-//     })
-//
-//   }
-//
-//
-//
-// }
