@@ -13,8 +13,10 @@
     const vm = this;
     console.log('homeController');
 
+
     vm.$onInit = function(){
       console.log('$onInit fired');
+
     };
 
 
