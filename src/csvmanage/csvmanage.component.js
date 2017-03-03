@@ -103,7 +103,6 @@
         'sse': sse,
         'ssr': ssr,
         'sst': sst
-        // TODO create array of dependent variables [constant, x1, x2 ...]
       };
       $state.go("regression", {matrixObj: matrixObj});
 

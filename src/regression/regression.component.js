@@ -31,7 +31,7 @@
       vm.f0Table = f0Array[parseInt(vm.matrixObj.n) - parseInt(vm.matrixObj.p) - 1][parseInt(vm.matrixObj.k) - 1];
       console.log(vm.f0 > vm.f0Table); // true for pullStrength sample
 
-      // accesses proper t value
+      // accesses proper t value (if tcalc > ttable variable contributes significantly to model)
       // console.log('t value', tObj[parseInt(vm.matrixObj.n) - parseInt(vm.matrixObj.p)]);
 
       // TODO function to manip bHat vals for ng-repeat
@@ -41,7 +41,9 @@
         vm.tableArr.push({
           'bHat': vm.matrixObj.bHat[i][0],
           'name': vm.matrixObj.depVariables[i],
-          'sebHatj': Math.sqrt(vm.sigSq*vm.matrixObj.C[i][i])
+          'sebHatj': Math.sqrt(vm.sigSq*vm.matrixObj.C[i][i]),
+          't':vm.matrixObj.bHat[i][0]/Math.sqrt(vm.sigSq*vm.matrixObj.C[i][i])
+          // is 't' correct? (looks good for x2, not x1)
         });
         // console.log(vm.tableArr[i].name, vm.matrixObj.C[i][i]);
       }
