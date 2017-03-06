@@ -15,6 +15,7 @@ app = Flask(__name__)
     # would get same result for running in login.py, user.py, etc
 # app.secret_key = '1234'
 app.config.from_object(os.environ.get('APP_SETTINGS'))
+print(os.environ.get('APP_SETTINGS'))
 
 Database.initialize(host='localhost', database='linreg', user='postgres', password='1234')
 
