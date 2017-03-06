@@ -22,7 +22,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 from models import Result
 
-Database.initialize(host='localhost', database='linreg', user='postgres', password='1234')
+# Database.initialize(host='localhost', database='linreg', user='postgres', password='1234')
 
 @app.route('/')
 def homepage():
