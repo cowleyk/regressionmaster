@@ -1,13 +1,20 @@
+import os
 from flask import Flask, render_template, session, redirect, request
 from twitter_utils import get_request_token, get_oauth_verifier_url, get_access_token
 from user import User
 from database import Database
+from os.path import join, dirname
+from dotenv import load_dotenv
+
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
 
 app = Flask(__name__)
 # __name__ = '__main__'
     # means we ran app.py file
     # would get same result for running in login.py, user.py, etc
-app.secret_key = '1234'
+# app.secret_key = '1234'
+app.config.from_object(os.environ.get('APP_SETTINGS'))
 
 Database.initialize(host='localhost', database='linreg', user='postgres', password='1234')
 
@@ -45,7 +52,7 @@ def twitter_auth():
 
     session['screen_name'] = user.screen_name
 
-    return user.screen_name
+    return 'hello {}'.format(user.screen_name)
 
 
 app.run(port=4995)
