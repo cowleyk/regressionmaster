@@ -52,7 +52,7 @@ def twitter_auth():
 
     session['screen_name'] = user.screen_name
 
-    return 'hello {}'.format(user.screen_name)
+    return 'hello there {}'.format(user.screen_name)
 
 
 app.run(port=4995)
