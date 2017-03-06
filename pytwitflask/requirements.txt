@@ -4,7 +4,7 @@ click==6.7
 Flask==0.10.1
 Flask-Migrate==1.8.0
 Flask-Script==2.0.5
-Flask-SQLAlchemy==2.2
+Flask-SQLAlchemy==2.1
 gunicorn==19.4.5
 httplib2==0.10.3
 itsdangerous==0.24

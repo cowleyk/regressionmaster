@@ -5,6 +5,7 @@ from user import User
 from database import Database
 from os.path import join, dirname
 from dotenv import load_dotenv
+from flask.ext.sqlalchemy import SQLAlchemy
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
@@ -16,6 +17,10 @@ app = Flask(__name__)
 # app.secret_key = '1234'
 app.config.from_object(os.environ.get('APP_SETTINGS'))
 print(os.environ.get('APP_SETTINGS'))
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+from models import Result
 
 Database.initialize(host='localhost', database='linreg', user='postgres', password='1234')
 
