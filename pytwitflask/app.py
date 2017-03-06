@@ -18,7 +18,7 @@ def homepage():
 @app.route('/login/twitter')
 def twitter_login():
     if 'screen_name' in session:
-        return render_template('home.html')
+        return session['screen_name']
     request_token = get_request_token()
     # need to store token while user leaves site, save request_token in session cookie (stored on browser)
     session['request_token'] = request_token
@@ -50,3 +50,5 @@ def twitter_auth():
 
 app.run(port=4995)
 # can use app.run(port=4995, debug=True) to enable debugger
+
+# use user.twitter_request(uri, verb) to interact w/ twitter api (ie. send DMs)
