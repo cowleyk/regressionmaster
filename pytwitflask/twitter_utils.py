@@ -1,6 +1,5 @@
 import oauth2
 import constants
-import constants
 import urllib.parse
 
 # consumer = object which represents our app uniquely
