@@ -6,19 +6,19 @@
 <br>
 <div class="container">
   <div ng-if="$ctrl.showUpload">
-  <ng-csv-import content="csv.content"
-      material
-      md-button-class="md-icon-button md-raised md-accent"
-      md-svg-icon="file:ic_file_upload_24px"
-      header="csv.header"
-      separator="csv.separator"
-      result="csv.result"
-      accept=".csv"></ng-csv-import>
+  <!-- <input> file id name accept=".csv", use jquery -->
+  <form ng-submit="$ctrl.upload()">
+    <input type="file"
+      id="fileinput" name="file" />
+      <br>
+    <button type="submit">Upload</button>
+  </form>
+
   <br>
-  <button ng-click="$ctrl.manipData()">Upload</button>
+  <!-- <button ng-click="$ctrl.manipData()">Upload</button> -->
   </div>
     <!-- ng-repeat of input boxes for headerArr -->
-  <div ng-if="$ctrl.showOptions">
+  <!-- <div ng-if="$ctrl.showOptions">
     <form ng-submit="$ctrl.setSelection()">
       <p>Select the independent variable</p>
       <div class="row">
@@ -42,5 +42,5 @@
 
       <button type="submit">Submit</button>
     </form>
-  </div>
+  </div> -->
 </div>

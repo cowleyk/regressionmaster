@@ -12,17 +12,38 @@
 
   function csvmanageController($scope, $state) {
     const vm = this;
-    $scope.csv = {
-    	content: null,
-    	header: true,
-    	headerVisible: true,
-    	separator: ',',
-    	separatorVisible: true,
-    	result: null,
-    	encoding: 'ISO-8859-1',
-    	encodingVisible: true,
-        uploadButtonLabel: "upload a csv file"
-    };
+
+    vm.upload = function(){
+      var data = null;
+      var input = document.getElementById('fileinput');
+      var file = input.files[0];
+      // console.log(file);
+      var reader = new FileReader();
+      reader.readAsText(file);
+      reader.onload = function(event) {
+          var csvData = event.target.result;
+          console.log(csvData);
+          console.log(typeof csvData);
+          // csvData is the string we need!
+
+
+          // data = $.csv.toArrays(csvData);
+          // if (data && data.length > 0) {
+          //   console.log(data);
+          //   console.log('Imported -' + data.length + '- rows successfully!');
+          // } else {
+          //     console.log('No data to import!');
+          // }
+      };
+      reader.onerror = function() {
+          console.log('Unable to read ' + file.fileName);
+      };
+
+    }
+
+    // vm.$onInit = function(){
+    //   $('#txtFileUpload').addEventListener('change', vm.upload, false);
+    // }
     vm.variables = [];
     vm.showUpload = true;
     let headerArr;
@@ -31,27 +52,9 @@
     let depMatrix = [];
     vm.manipData = function(){
       // run when 'upload' button clicked
-      let fileData = $scope.csv.content;
 
-      let split1 = fileData.split(/\n/);
-      headerArr = split1.shift().split(',');
-      headerArr.forEach(function(elem){
-        let elemObj = {'name':elem, 'dependent':false};
-        vm.variables.push(elemObj);
-      });
-      for (var i = 0; i < split1.length; i++) {
-        let obvsNum = i+1;
-        split1[i] = split1[i].split(',');
-        csvObj[obvsNum] = split1[i];
-        if(csvObj[obvsNum].length !== headerArr.length){
-          delete csvObj[obvsNum];
-        }
-      }
-      split1.pop();
-      // let headerArr = split1[0];
-      vm.showOptions = true;
-      vm.showUpload = false;
-      // csvObj = {obvs#:[yN, x1N, x2N]}
+
+
     };
 
     // TODO create constructor for csv data
