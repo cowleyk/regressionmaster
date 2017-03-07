@@ -13,9 +13,13 @@
     const vm = this;
 
 
-    // vm.$onInit = function(){
-    //
-    // };
+    vm.$onInit = function(){
+      console.log('homeController');
+      // $http.get('https://linreg-four.herokuapp.com/test').then(function(data){
+      //   console.log('data.data', data.data);
+      //   console.log('data', data);
+      // })
+    };
 
 
 

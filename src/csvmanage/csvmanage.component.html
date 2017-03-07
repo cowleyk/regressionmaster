@@ -6,7 +6,6 @@
 <br>
 <div class="container">
   <div ng-if="$ctrl.showUpload">
-  <!-- <input> file id name accept=".csv", use jquery -->
   <form ng-submit="$ctrl.upload()">
     <input type="file"
       id="fileinput" name="file" />
@@ -15,8 +14,9 @@
   </form>
 
   <br>
-  <!-- <button ng-click="$ctrl.manipData()">Upload</button> -->
   </div>
+</div>
+<!-- <button ng-click="$ctrl.manipData()">Upload</button> -->
     <!-- ng-repeat of input boxes for headerArr -->
   <!-- <div ng-if="$ctrl.showOptions">
     <form ng-submit="$ctrl.setSelection()">
@@ -43,4 +43,3 @@
       <button type="submit">Submit</button>
     </form>
   </div> -->
-</div>
