@@ -7,12 +7,15 @@
     templateUrl: 'src/csvmanage/csvmanage.component.html'
   });
 
-  csvmanageController.$inject = ['$scope', '$state'];
+  csvmanageController.$inject = ['$http', '$state'];
 
-  function csvmanageController($scope, $state) {
+  function csvmanageController($http, $state) {
     const vm = this;
+    vm.independent = '';
     vm.showUpload = true;
     vm.showOptions = false;
+    // vm.showOptions = true
+
 
     vm.$onInit = function(){
       // $http.get user csv data, assign to vm.rawcsvstring
@@ -29,14 +32,62 @@
       reader.readAsText(file);
       reader.onload = function(event) {
         var csvData = event.target.result;
-        vm.rawcsvstring = JSON.stringify(csvData);
+        let rawcsvstring = JSON.stringify(csvData);
 
         var csvCookie = 'csv_data='+JSON.stringify(csvData);
         console.log('csvCookie', csvCookie);
         document.cookie = csvCookie;
 
-        vm.createMatrixObj(vm.rawcsvstring);
-        // need to replicate ^this^ line inside the else stmt
+        rawcsvstring = rawcsvstring.substring(1, rawcsvstring.length-1);
+
+        vm.matrixObj = {
+          test: 'test',
+          elemObjArr: [],
+          xMatrix: [],
+          yMatrix: []
+        };
+
+        let csvReplaceString = rawcsvstring.replace(/\\r\\n/g, '%');
+
+        let csvLineSplitArr = csvReplaceString.split(/%/);
+        vm.headerArr = csvLineSplitArr.shift().split(',');
+        csvLineSplitArr.pop();
+        // csvLineSplitArr does not include headers after headerArr definied
+        console.log('headerArr', vm.headerArr);
+
+        for (let i = 0; i < vm.headerArr.length; i++) {
+          let elemObj = {
+            name: vm.headerArr[i],
+            dependent: false,
+            col_index: i,
+            valsArr: []
+          };
+          vm.matrixObj.elemObjArr.push(elemObj);
+        }
+        console.log('elemObjArr', vm.matrixObj.elemObjArr);
+
+        let masterMatrixObj = {};
+        csvLineSplitArr.forEach(function(line){
+          let lineArr = line.split(',');
+          for (let i = 0; i < lineArr.length; i++) {
+            // lineArr[i] = individual data point
+            if(masterMatrixObj[i]){
+              masterMatrixObj[i].push(lineArr[i]);
+            }
+            else{
+              masterMatrixObj[i] = [];
+              masterMatrixObj[i].push(lineArr[i]);
+            }
+          }
+
+        })
+        vm.matrixObj.elemObjArr.forEach(function(elem){
+          // elem = elemObj in array
+          elem.valsArr = masterMatrixObj[elem.col_index];
+        });
+
+        vm.showOptions = true;
+        vm.showUpload = false;
 
 
         // TODO add in $http update (get) route to add cookie to db
@@ -55,19 +106,24 @@
         // get user's csv file from $onInit get fxn, should be vm.rawcsvstring
       // }
 
+          // TODO set up independent/dependent selector section
+
     };
 
     // TODO create constructor for csv data
       // include variable name array, dependent variable, y & x arrays
     // TODO make csv.separator customizable
 
-    vm.createMatrixObj = function(rawcsvstring){
-      let csvReplaceString = rawcsvstring.replace(/\\r\\n/g, '%');
-      console.log('csvReplaceString', csvReplaceString);
-      
-    }
+    let initializeMatrixObj = function(rawcsvstring){
 
 
+      // return matrixObj
+    };
+
+
+    // TODO fxn for submitting variable declarations
+        // define xMatrix and yMatrix
+        // $state.go matrixObj and /regression
 
 
 
