@@ -11,21 +11,16 @@
 
   function regressionController($http, $stateParams, $state){
     const vm = this;
-
-    // TODO fxn ($onInit) for submitting variable declarations
-        // define xMatrix and yMatrix
-
-    // vm.dependentFilter = function(val){
-    //   return val.name !== vm.independent;
-    // };
-
-
+    vm.showOptions = true;
+    vm.showTable = false;
+    let regressionObj ={
+      test: 'test'
+    };
 
     vm.$onInit = function(){
       // console.log('$onInit fired');
       vm.matrixObj = $stateParams.matrixObj;
       console.log('matrixObj', vm.matrixObj);
-
 
       // vm.sigSq = vm.matrixObj.sse/(vm.matrixObj.n-vm.matrixObj.p);
       // console.log('sigSq', vm.sigSq);
@@ -58,10 +53,69 @@
       // }
       // console.log(vm.tableArr);
 
+    }; // close vm.$onInit
+
+    vm.setSelection = function(){
+      console.log(vm.independent);
+      let independentVar = vm.independent;
+      let independentObj = {};
+      let dependentObjArr = [];
+      let yMatrix = [];
+      let xMatrix = [];
+
+      // split data based on variable selection
+      vm.independentObj = vm.matrixObj.elemObjArr.forEach(function(elem){
+        if(elem.name === independentVar){
+          independentObj = elem;
+        }
+        if(elem.dependent){
+          dependentObjArr.push(elem);
+        }
+      });
+      console.log('independentObj', independentObj);
+      console.log('dependentObjArr', dependentObjArr);
+
+      // define xMatrix, yMatrix
+      vm.matrixObj.allDataMatrix.forEach(function(lineArr){
+        let indIndex = independentObj.col_index;
+        let indSplice = lineArr.splice(indIndex, 1)
+        yMatrix.push(indSplice);
+        lineArr.unshift(1);
+        xMatrix.push(lineArr);
+      });
+      console.log('yMatrix', yMatrix);
+      console.log('xMatrix', xMatrix);
+
+      let n = vm.matrixObj.allDataMatrix.length;
+      let k = dependentObjArr.length;
+      let p = k + 1
+      let cMatrix = math.inv(math.multiply(math.transpose(xMatrix), xMatrix));
+      let xPrY = math.multiply(math.transpose(xMatrix), yMatrix);
+      let bHatMatrix = math.multiply(cMatrix, xPrY);
+      let sse = math.multiply(math.transpose(yMatrix),yMatrix) - math.multiply(math.transpose(bHatMatrix), math.multiply(math.transpose(xMatrix), yMatrix));
+      let sumY = 0;
+      yMatrix.forEach(function(dp){
+        sumY += parseFloat(dp[0]);
+      });
+      let ssr = math.multiply(math.transpose(bHatMatrix), math.multiply(math.transpose(xMatrix), yMatrix))-(sumY*sumY)/(n);
+      let sst = sse + ssr;
+      let sigSq = sse/(n-p);
+      let f0 = (ssr/k)/(sse/(n-p));
+      let fTable = f0Array[n-p-1][k-1];
+      console.log('f0', f0);
+      console.log('fTable', fTable);
+
+
+      vm.showOptions = false;
+      vm.showTable = true;
+    }; // close vm.setSelection
+
+    vm.dependentFilter = function(val){
+      return val.name !== vm.independent;
     };
 
 
 
-  }
+  } // close controller
 
 })();

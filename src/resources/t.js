@@ -32,4 +32,3 @@ const tObj = {
   29:2.045,
   30:2.042,
 }
-module.exports = tObj;

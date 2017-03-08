@@ -27,7 +27,8 @@
         component: 'regression',
         params: {
           matrixObj: {
-            elemObjArr: []
+            elemObjArr: [],
+            allDataMatrix: []
           }
         },
       });

@@ -13,7 +13,8 @@
     const vm = this;
     vm.showUpload = true;
     let matrixObj = {
-      elemObjArr: []
+      elemObjArr: [],
+      allDataMatrix: []
     };
 
     vm.$onInit = function(){
@@ -35,7 +36,6 @@
         rawcsvstring = JSON.stringify(csvData);
 
         var csvCookie = 'csv_data='+JSON.stringify(csvData);
-        console.log('csvCookie', csvCookie);
         document.cookie = csvCookie;
 
         vm.initializeMatrixObj(rawcsvstring);
@@ -58,7 +58,6 @@
 
     vm.goToRegression = function(){
       console.log('goToRegression');
-      console.log(matrixObj);
       $state.go("regression", {matrixObj: matrixObj});
     }
 
@@ -85,6 +84,7 @@
       let masterMatrixObj = {};
       csvLineSplitArr.forEach(function(line){
         let lineArr = line.split(',');
+        matrixObj.allDataMatrix.push(lineArr);
         for (let i = 0; i < lineArr.length; i++) {
           // lineArr[i] = individual data point
           if(masterMatrixObj[i]){
@@ -95,7 +95,6 @@
             masterMatrixObj[i].push(lineArr[i]);
           }
         }
-
       });
       matrixObj.elemObjArr.forEach(function(elem){
         // elem = elemObj in array
