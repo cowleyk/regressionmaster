@@ -13,33 +13,12 @@
     const vm = this;
     vm.showOptions = true;
     vm.showTable = false;
-    let regressionObj ={
-      test: 'test'
-    };
 
     vm.$onInit = function(){
       // console.log('$onInit fired');
       vm.matrixObj = $stateParams.matrixObj;
       console.log('matrixObj', vm.matrixObj);
 
-      // vm.sigSq = vm.matrixObj.sse/(vm.matrixObj.n-vm.matrixObj.p);
-      // console.log('sigSq', vm.sigSq);
-      //
-      // vm.f0 = (vm.matrixObj.ssr/vm.matrixObj.k)/(vm.matrixObj.sse/(vm.matrixObj.n-vm.matrixObj.p));
-      // console.log('f0', vm.f0);
-
-      // f0Array & tObj accessible!
-      // access via f0 table [row(n-p-1)][column(k-1)]
-
-      // accesses proper f0 value from table!
-      // vm.f0Table = f0Array[parseInt(vm.matrixObj.n) - parseInt(vm.matrixObj.p) - 1][parseInt(vm.matrixObj.k) - 1];
-      // console.log(vm.f0 > vm.f0Table); // true for pullStrength sample
-
-      // accesses proper t value (if tcalc > ttable variable contributes significantly to model)
-      // console.log('t value', tObj[parseInt(vm.matrixObj.n) - parseInt(vm.matrixObj.p)]);
-
-      // TODO function to manip bHat vals for ng-repeat
-        // array of objects w/ variable name, tTest values & tTable values
       // vm.tableArr = [];
       // for (var i = 0; i < vm.matrixObj.bHat.length; i++) {
       //   vm.tableArr.push({
@@ -56,7 +35,7 @@
     }; // close vm.$onInit
 
     vm.setSelection = function(){
-      console.log(vm.independent);
+      let depVarTableArr =[];
       let independentVar = vm.independent;
       let independentObj = {};
       let dependentObjArr = [];
@@ -72,7 +51,6 @@
           dependentObjArr.push(elem);
         }
       });
-      console.log('independentObj', independentObj);
       console.log('dependentObjArr', dependentObjArr);
 
       // define xMatrix, yMatrix
@@ -83,8 +61,6 @@
         lineArr.unshift(1);
         xMatrix.push(lineArr);
       });
-      console.log('yMatrix', yMatrix);
-      console.log('xMatrix', xMatrix);
 
       let n = vm.matrixObj.allDataMatrix.length;
       let k = dependentObjArr.length;
@@ -100,10 +76,51 @@
       let ssr = math.multiply(math.transpose(bHatMatrix), math.multiply(math.transpose(xMatrix), yMatrix))-(sumY*sumY)/(n);
       let sst = sse + ssr;
       let sigSq = sse/(n-p);
-      let f0 = (ssr/k)/(sse/(n-p));
+      let msr = (ssr/k);
+      let mse = (sse/(n-p));
+      let f0 = msr/mse
       let fTable = f0Array[n-p-1][k-1];
-      console.log('f0', f0);
-      console.log('fTable', fTable);
+      let tTable = tObj[n-p];
+
+      vm.regressionObj ={
+        n: n,
+        k: k,
+        sse: sse.toFixed(3),
+        ssr: ssr.toFixed(3),
+        sst: sst.toFixed(3),
+        msr: msr.toFixed(3),
+        mse: mse.toFixed(3),
+        sigSq: sigSq.toFixed(3),
+        f0: f0.toFixed(3),
+        fTable: fTable
+      };
+
+      // TODO create variable table's array [{},{name, coefficient, se(coeff), t},{}]
+      vm.varTableArr = [];
+      for (let i = 0; i < bHatMatrix.length; i++) {
+        let coeffObj;
+        if(i === 0){
+          let tzero = bHatMatrix[i][0]/Math.sqrt(Math.abs(sigSq*cMatrix[i][i]));
+          coeffObj = {
+            name: 'Constant',
+            coeff: bHatMatrix[i][0].toFixed(3),
+            seCoeff: Math.sqrt(sigSq*cMatrix[i][i]).toFixed(3),
+            t: Math.abs(tzero).toFixed(3),
+            tTable: tTable
+          };
+        }
+        else{
+          let tzero = bHatMatrix[i][0]/Math.sqrt(Math.abs(sigSq*cMatrix[i][i]));
+          coeffObj = {
+            name: dependentObjArr[i-1].name,
+            coeff: bHatMatrix[i][0].toFixed(3),
+            seCoeff: Math.sqrt(sigSq*cMatrix[i][i]).toFixed(3),
+            t: Math.abs(tzero).toFixed(3),
+            tTable: ' '
+          };
+        }
+        vm.varTableArr.push(coeffObj);
+      }
 
 
       vm.showOptions = false;

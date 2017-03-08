@@ -17,6 +17,11 @@
         component: 'home',
       })
       .state({
+        name: 'login',
+        url: '/login/twitter',
+        component: 'login',
+      })
+      .state({
         name: 'csvmanage',
         url: '/csvmanage',
         component: 'csvmanage',
