@@ -12,6 +12,15 @@
   function regressionController($http, $stateParams, $state){
     const vm = this;
 
+    // TODO fxn ($onInit) for submitting variable declarations
+        // define xMatrix and yMatrix
+
+    // vm.dependentFilter = function(val){
+    //   return val.name !== vm.independent;
+    // };
+
+
+
     vm.$onInit = function(){
       // console.log('$onInit fired');
       vm.matrixObj = $stateParams.matrixObj;

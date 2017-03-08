@@ -18,20 +18,20 @@
 </div>
     <!-- ng-repeat of input boxes for headerArr -->
   <div ng-if="$ctrl.showOptions">
-    <form>
-    <!-- <form ng-submit="$ctrl.setSelection()"> -->
-      <p>Select the independent variable</p>
+    <!-- <form> -->
+    <form ng-submit="$ctrl.goToRegression()">
+      <!-- <p>Select the independent variable</p>
       <div class="row">
       <div class="three columns" ng-repeat="var in $ctrl.matrixObj.elemObjArr">
-      <!-- <div class="three columns"> -->
+      <div class="three columns">
         <label>
           <input type="radio" name="independentRadio" ng-value="var.name" ng-model="$ctrl.independent">
           <span class="label-body">{{ var.name }}</span>
         </label>
       </div>
       </div>
-      <br>
-      <button type="submit">Submit</button>
+      <br> -->
+      <button type="submit">Get Regression Model</button>
     </form>
   </div>
 
