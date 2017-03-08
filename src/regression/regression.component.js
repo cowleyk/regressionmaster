@@ -92,7 +92,8 @@
         mse: mse.toFixed(3),
         sigSq: sigSq.toFixed(3),
         f0: f0.toFixed(3),
-        fTable: fTable
+        fTable: fTable,
+        r2adj: 1-(sse/(n-p)/(sst/(n-1))).toFixed(3)
       };
 
       // TODO create variable table's array [{},{name, coefficient, se(coeff), t},{}]

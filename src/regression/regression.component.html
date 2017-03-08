@@ -65,8 +65,10 @@
 </div>
 <br>
 
+<br>
 <!-- table for dependent variable analysis -->
 <div class="container" ng-if="$ctrl.showTable">
+  <p>R<sup>2</sup><sub>adj</sub> = {{$ctrl.regressionObj.r2adj}}</p>
   <table style="border:1px solid #E1E1E1; border-radius:10%; padding:5%;">
     <p style="text-align:center;"><u>Regression Analysis</u></p>
     <tr>
@@ -82,13 +84,6 @@
       <td>se(&beta;) = {{var.seCoeff}}</td>
       <td>t<sub>0</sub> = {{var.t}}</td>
       <td>{{var.tTable}}</td>
-    </tr>
-    <tr>
-      <td>R<sup>2</sup><sub>adj</sub> = </td>
-      <td> </td>
-      <td> </td>
-      <td> </td>
-      <td> </td>
     </tr>
   </table>
 </div>
