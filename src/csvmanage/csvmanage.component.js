@@ -11,26 +11,22 @@
 
   function csvmanageController($http, $state) {
     const vm = this;
-    vm.independent = '';
     vm.showUpload = true;
-    // vm.showOptions = false;
-    // vm.showOptions = true
     let matrixObj = {
       elemObjArr: []
     };
 
-
     vm.$onInit = function(){
-      // $http.get user csv data, assign to vm.rawcsvstring
       console.log('csvmanage');
     };
 
     vm.upload = function(){
       var input = document.getElementById('fileinput');
       let rawcsvstring;
+
       // if(input.files[0]){ use file reader fxn }
+
       var file = input.files[0];
-      console.log('file', file);
 
       var reader = new FileReader();
       reader.readAsText(file);
@@ -43,32 +39,27 @@
         document.cookie = csvCookie;
 
         vm.initializeMatrixObj(rawcsvstring);
-        console.log(matrixObj);
-
-        // TODO add in $http update (get) route to add cookie to db
-            // store csv string as vm.rawcsvstring to be accesible throughout controller
 
       };
       reader.onerror = function() {
         alert('Unable to read ' + file.fileName);
       };
 
+      // TODO add in $http update (get) route to add cookie to db
+      // store csv string as vm.rawcsvstring to be accesible throughout controller
       // else{
         // get user's csv file from $onInit get fxn, should be vm.rawcsvstring
       // }
 
-
       vm.showUpload = !vm.showUpload;
       vm.showOptions = !vm.showOptions;
-
-      // TODO set up independent/dependent selector section
-        // probably best to do inside regression component
 
     };
 
     vm.goToRegression = function(){
       console.log('goToRegression');
       console.log(matrixObj);
+      $state.go("regression", {matrixObj: matrixObj});
     }
 
     vm.initializeMatrixObj = function(rawcsvstring){
@@ -90,7 +81,6 @@
         };
         matrixObj.elemObjArr.push(elemObj);
       }
-      console.log('elemObjArr', matrixObj.elemObjArr);
 
       let masterMatrixObj = {};
       csvLineSplitArr.forEach(function(line){
@@ -106,7 +96,7 @@
           }
         }
 
-      })
+      });
       matrixObj.elemObjArr.forEach(function(elem){
         // elem = elemObj in array
         elem.valsArr = masterMatrixObj[elem.col_index];
@@ -114,6 +104,5 @@
     };
 
   } // close controller
-
 
 })();

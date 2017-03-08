@@ -6,19 +6,29 @@
 <br>
 <br>
 
+<div class="three columns" ng-repeat="var in $ctrl.matrixObj.elemObjArr">
+<div class="three columns">
+  <label>
+    <input type="radio" name="independentRadio" ng-value="var.name" ng-model="$ctrl.independent">
+    <span class="label-body">{{ var.name }}</span>
+  </label>
+</div>
+</div>
+
+
 <!-- table for overall regression -->
-<div class="container" style="border:1px solid black; padding:5px;">
+<!-- <div class="container" style="border:1px solid black; padding:5px;">
   <div ng-class="{highlight: $ctrl.f0 < $ctrl.f0Table}">
   f0: {{$ctrl.f0}}
   f0Table: {{$ctrl.f0Table}}
   </div>
 </div>
-<br>
+<br> -->
 <!-- table for dependent variable analysis -->
-<div class="container" style="border:1px solid black; padding:5px;">
+<!-- <div class="container" style="border:1px solid black; padding:5px;">
   <div class="twelve columns" ng-repeat="var in $ctrl.tableArr">
     {{var.name}}: {{var.bHat}}
     <br>
     {{var.bHat/var.sebHatj}}
   </div>
-</div>
+</div> -->
