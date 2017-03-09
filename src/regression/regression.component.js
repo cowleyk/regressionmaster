@@ -12,30 +12,25 @@
   function regressionController($http, $stateParams, $state){
     const vm = this;
     vm.showOptions = true;
-    vm.showTable = false;
+    vm.showBlurbs = false;
+    vm.showTableReg = false;
+    vm.showTableVar = false;
 
     vm.$onInit = function(){
       // console.log('$onInit fired');
       vm.matrixObj = $stateParams.matrixObj;
       console.log('matrixObj', vm.matrixObj);
 
-      // vm.tableArr = [];
-      // for (var i = 0; i < vm.matrixObj.bHat.length; i++) {
-      //   vm.tableArr.push({
-      //     'bHat': vm.matrixObj.bHat[i][0],
-      //     'name': vm.matrixObj.depVariables[i],
-      //     'sebHatj': Math.sqrt(vm.sigSq*vm.matrixObj.C[i][i]),
-      //     't':vm.matrixObj.bHat[i][0]/Math.sqrt(vm.sigSq*vm.matrixObj.C[i][i])
-          // is 't' correct? (looks good for x2, not x1)
-        // });
-        // console.log(vm.tableArr[i].name, vm.matrixObj.C[i][i]);
-      // }
-      // console.log(vm.tableArr);
-
     }; // close vm.$onInit
 
+    vm.toggleRegTable = function(){
+      vm.showTableReg = !vm.showTableReg;
+    };
+    vm.toggleVarTable = function(){
+      vm.showTableVar = !vm.showTableVar;
+    };
+
     vm.setSelection = function(){
-      let depVarTableArr =[];
       let independentVar = vm.independent;
       let independentObj = {};
       let dependentObjArr = [];
@@ -56,7 +51,7 @@
       // define xMatrix, yMatrix
       vm.matrixObj.allDataMatrix.forEach(function(lineArr){
         let indIndex = independentObj.col_index;
-        let indSplice = lineArr.splice(indIndex, 1)
+        let indSplice = lineArr.splice(indIndex, 1);
         yMatrix.push(indSplice);
         lineArr.unshift(1);
         xMatrix.push(lineArr);
@@ -64,7 +59,7 @@
 
       let n = vm.matrixObj.allDataMatrix.length;
       let k = dependentObjArr.length;
-      let p = k + 1
+      let p = k + 1;
       let cMatrix = math.inv(math.multiply(math.transpose(xMatrix), xMatrix));
       let xPrY = math.multiply(math.transpose(xMatrix), yMatrix);
       let bHatMatrix = math.multiply(cMatrix, xPrY);
@@ -81,6 +76,21 @@
       let f0 = msr/mse
       let fTable = f0Array[n-p-1][k-1];
       let tTable = tObj[n-p];
+
+      if (fTable > f0){
+        vm.comparator = '>';
+        vm.blurb = `${independentVar} is not linearly related any dependent variable`;
+        vm.marker = '&#9746;';
+        // vm.highlightF = 'true'
+      }
+      else{
+        vm.comparator = '<'
+        vm.blurb = `${independentVar} is linearly related to at least one dependent variable`;
+        vm.ftestCheck = true;
+        vm.marker = '&#9745;';
+        // vm.marker = '&#10004;';
+
+      }
 
       vm.regressionObj ={
         n: n,
@@ -125,7 +135,7 @@
 
 
       vm.showOptions = false;
-      vm.showTable = true;
+      vm.showBlurbs = true;
     }; // close vm.setSelection
 
     vm.dependentFilter = function(val){

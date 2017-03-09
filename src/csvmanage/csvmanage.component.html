@@ -13,29 +13,7 @@
 </div>
     <!-- ng-repeat of input boxes for headerArr -->
   <div ng-if="$ctrl.showOptions">
-    <!-- <form> -->
     <form ng-submit="$ctrl.goToRegression()">
-      <!-- <p>Select the independent variable</p>
-      <div class="row">
-      <div class="three columns" ng-repeat="var in $ctrl.matrixObj.elemObjArr">
-      <div class="three columns">
-        <label>
-          <input type="radio" name="independentRadio" ng-value="var.name" ng-model="$ctrl.independent">
-          <span class="label-body">{{ var.name }}</span>
-        </label>
-      </div>
-      </div>
-      <br> -->
       <button type="submit">Get Regression Model</button>
     </form>
   </div>
-
-      <!-- <p ng-if="$ctrl.showOptions">Select the dependent variables</p>
-      <div class="row">
-      <div class="three columns" ng-repeat="var in $ctrl.variables | filter:$ctrl.dependentFilter" ng-if="$ctrl.independent">
-        <label class="example-send-yourself-copy">
-          <input type="checkbox" ng-model="var.dependent">
-          <span class="label-body">{{var.name}}</span>
-        </label>
-      </div>
-      </div> -->

@@ -7,7 +7,7 @@
     <div class="three columns" ng-repeat="variable in $ctrl.matrixObj.elemObjArr">
       <label class="example-send-yourself-copy">
         <input type="radio" name="independentRadio" ng-value="variable.name" ng-model="$ctrl.independent">
-        <span class="label-body">{{variable.name}}</span>
+        <span class="label-body">//variable.name//</span>
       </label>
     </div>
     </div>
@@ -17,22 +17,56 @@
     <div class="three columns" ng-repeat="var in $ctrl.matrixObj.elemObjArr | filter:$ctrl.dependentFilter" ng-if="$ctrl.independent">
       <label class="example-send-yourself-copy">
         <input type="checkbox" ng-model="var.dependent">
-        <span class="label-body">{{var.name}}</span>
+        <span class="label-body">//var.name//</span>
       </label>
     </div>
     </div>
-
     <button type="submit">Submit</button>
   </form>
 </div>
 
-
+<!-- synposis blurbs -->
+<div class="row" ng-if="$ctrl.showBlurbs">
+  <div class="five columns" style="background-color:#04ADDD; padding: 5%; border-radius:10%;">
+    <h3>Regression Synopsis</h3>
+    <div style="background-color:#D2B48C; text-align:center; border-radius:10%;">
+      <p><u>Model Equation</u></p>
+      <p><em>//$ctrl.independent//</em> = <em ng-repeat="var in $ctrl.varTableArr"> <b ng-if="var.name !== 'Constant'">+</b> //var.coeff//<b ng-if="var.name !== 'Constant'">(//var.name//)</b></em></p>
+    </div>
+    <p>R<sup>2</sup><sub>adj</sub> = //$ctrl.regressionObj.r2adj//</p>
+    <p>F<sub>test</sub> = F<sub>0.05,n-p,k</sub> >/< F<sub>0</sub></p>
+    <p ng-class="{highlight: $ctrl.regressionObj.f0 < $ctrl.regressionObj.f0Table}">//$ctrl.regressionObj.fTable// <em>//$ctrl.comparator//</em> //$ctrl.regressionObj.f0// <em ng-if="$ctrl.ftestCheck"> &#10004;</em><em ng-if="!$ctrl.ftestCheck"> &#9747;</em></p>
+    <p>//$ctrl.blurb//</p>
+    <button class="tanButton" ng-click="$ctrl.toggleRegTable()">Show Table</button>
+  </div>
+  <div class="seven columns" style="background-color:#04ADDD; padding: 5%; border-radius:10%;">
+    <h3>Coefficient Synopsis</h3>
+    <p>t<sub>&alpha;/2,(n-p)</sub> = //$ctrl.varTableArr[0].tTable//</p>
+    <table>
+      <tr>
+        <th>Coefficient</th>
+        <th>&beta;</th>
+        <th>t<sub>0</sub></th>
+        <th>t<sub>0</sub> &gt; t<sub>&alpha;/2,(n-p)</sub>?</th>
+      </tr>
+      <tr ng-repeat="var in $ctrl.varTableArr">
+        <td>//var.name//</td>
+        <td>var.coeff</td>
+        <td>//var.t//</td>
+        <td><em ng-if="var.t>$ctrl.varTableArr[0].tTable"> &#10004; //var.name// contributes significantly to the model</em>
+            <em ng-if="var.t<$ctrl.varTableArr[0].tTable"> &#9747; //var.name// should be removed the model</em>
+        </td>
+      </tr>
+    </table>
+    <button class="tanButton" ng-click="$ctrl.toggleVarTable()">Show Table</button>
+  </div>
+</div>
 
 <!-- table for overall regression -->
-<div class="container" ng-if="$ctrl.showTable">
+<div class="container" ng-if="$ctrl.showTableReg">
   <!-- <div ng-class="{highlight: $ctrl.f0 < $ctrl.f0Table}"></div> -->
   <table style="border:1px solid #E1E1E1; border-radius:10%; padding:5%;">
-    <p style="text-align:center;"><u>Analysis of Variance</u></p>
+    <caption style="text-align:center;"><u>Analysis of Variance</u></caption>
     <tr>
       <th>Source Of Variation</th>
       <th>Sum of Squares</th>
@@ -42,22 +76,22 @@
     </tr>
     <tr>
       <td>Regression</td>
-      <td><i>SS<sub>R</sub> =</i> {{$ctrl.regressionObj.ssr}}</td>
-      <td><i>k =</i> {{$ctrl.regressionObj.k}}</td>
-      <td><i>MS<sub>R</sub> =</i> {{$ctrl.regressionObj.msr}}</td>
-      <td><i>MS<sub>R</sub>/MS<sub>E</sub> =</i> {{$ctrl.regressionObj.f0}}</td>
+      <td><i>SS<sub>R</sub> =</i> //$ctrl.regressionObj.ssr//</td>
+      <td><i>k =</i> //$ctrl.regressionObj.k//</td>
+      <td><i>MS<sub>R</sub> =</i> //$ctrl.regressionObj.msr//</td>
+      <td><i>MS<sub>R</sub>/MS<sub>E</sub> =</i> //$ctrl.regressionObj.f0//</td>
     </tr>
     <tr>
       <td>Error or Residual</td>
-      <td><i>SS<sub>E</sub> =</i> {{$ctrl.regressionObj.sse}}</td>
-      <td><i>n-p =</i> {{$ctrl.regressionObj.n - $ctrl.regressionObj.p}}</td>
-      <td><i>MS<sub>E</sub> =</i> {{$ctrl.regressionObj.mse}}</td>
+      <td><i>SS<sub>E</sub> =</i> //$ctrl.regressionObj.sse//</td>
+      <td><i>n-p =</i> //$ctrl.regressionObj.n - $ctrl.regressionObj.p//</td>
+      <td><i>MS<sub>E</sub> =</i> //$ctrl.regressionObj.mse//</td>
       <td></td>
     </tr>
     <tr>
       <td>Total</td>
-      <td><i>SS<sub>T</sub> =</i> {{$ctrl.regressionObj.sst}}</td>
-      <td><i>n-1 =</i> {{$ctrl.regressionObj.n - 1}}</td>
+      <td><i>SS<sub>T</sub> =</i> //$ctrl.regressionObj.sst//</td>
+      <td><i>n-1 =</i> //$ctrl.regressionObj.n - 1//</td>
       <td></td>
       <td></td>
     </tr>
@@ -65,12 +99,10 @@
 </div>
 <br>
 
-<br>
 <!-- table for dependent variable analysis -->
-<div class="container" ng-if="$ctrl.showTable">
-  <p>R<sup>2</sup><sub>adj</sub> = {{$ctrl.regressionObj.r2adj}}</p>
+<div class="container" ng-if="$ctrl.showTableVar">
   <table style="border:1px solid #E1E1E1; border-radius:10%; padding:5%;">
-    <p style="text-align:center;"><u>Regression Analysis</u></p>
+    <caption style="text-align:center;"><u>Coefficient Analysis</u></caption>
     <tr>
       <th>Variable</th>
       <th>Coefficient (&beta;)</th>
@@ -79,11 +111,11 @@
       <th>t<sub>&alpha;/2,(n-p)</sub></th>
     </tr>
     <tr ng-repeat="var in $ctrl.varTableArr">
-      <td>{{var.name}}</td>
-      <td>&beta; = {{var.coeff}}</td>
-      <td>se(&beta;) = {{var.seCoeff}}</td>
-      <td>t<sub>0</sub> = {{var.t}}</td>
-      <td>{{var.tTable}}</td>
+      <td>//var.name//</td>
+      <td>&beta; = //var.coeff//</td>
+      <td>se(&beta;) = //var.seCoeff//</td>
+      <td>t<sub>0</sub> = //var.t//</td>
+      <td>//var.tTable//</td>
     </tr>
   </table>
 </div>

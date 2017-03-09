@@ -3,9 +3,12 @@
 
   angular.module('app').config(config)
 
-  config.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider']
+  config.$inject = ['$interpolateProvider', '$stateProvider', '$urlRouterProvider', '$locationProvider']
 
-  function config($stateProvider, $urlRouterProvider, $locationProvider){
+  function config($interpolateProvider, $stateProvider, $urlRouterProvider, $locationProvider){
+
+    $interpolateProvider.startSymbol('//');
+    $interpolateProvider.endSymbol('//');
 
     // this line is optional
     $locationProvider.html5Mode(true)

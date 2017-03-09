@@ -38,8 +38,8 @@ class User:
         authorized_client = oauth2.Client(consumer, authorized_token)
 
         # Make Twitter API calls
-        response, content = authorized_client.request(uri, verb)
-        if response.status != 200:
+        resp, content = authorized_client.request(uri, verb)
+        if resp.status != 200:
             print('An error occured when searching')
 
         return json.loads(content.decode('utf-8'))

@@ -6,6 +6,10 @@ button{
   background-color: #04ADDD;
 }
 
+.tanButton{
+  background-color:#D2B48C;
+}
+
 a{
   float:left;
 }
@@ -13,4 +17,8 @@ a{
 .highlight{
   background-color: red;
   color:white;
+}
+
+.highlightgreen{
+  background-color: green;
 }
