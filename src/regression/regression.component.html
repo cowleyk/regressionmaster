@@ -62,6 +62,24 @@
   </div>
 </div>
 
+<!-- Prediction bubble -->
+<div class="row" ng-if="$ctrl.showBlurbs">
+  <div class="three columns">  </div>
+  <div class="six columns" style="background-color:#04ADDD; padding: 5%; border-radius:10%;">
+    <h3>Prediction of New Observations</h3>
+    <p>Y<sub>0</sub> = y<sub>0</sub> &plusmn; t<sub>&alpha;/2,(n-p)</sub>&radic;<span style="text-decoration: overline">&sigma;</span><sup>2</sup><span style="text-decoration: overline">(1 + x`</span><sub>0</sub><span style="text-decoration: overline">(X`X)</span><sup>-1</sup><span style="text-decoration: overline">x</span><sub>0</sub><span style="text-decoration: overline">)</span></p>
+    <form ng-submit="$ctrl.getPrediction()" ng-if="!$ctrl.showPrediction">
+      <div ng-repeat="var in $ctrl.varTableArr">
+        <label for="var.name">//var.name//</label>
+        <input type="text" id="var.name" ng-model="var.modinput" ng-if="var.name !== 'Constant'">
+      </div>
+      <button class="tanButton" type="submit">Get Prediction</button>
+    </form>
+    <button class="tanButton" style="text-align:center; width:75%;" ng-if="$ctrl.showPrediction">//$ctrl.predictMinus// &le; Y<sub>0</sub> &le; //$ctrl.predictPlus//</button>
+  </div>
+</div>
+
+
 <!-- table for overall regression -->
 <div class="container" ng-if="$ctrl.showTableReg">
   <!-- <div ng-class="{highlight: $ctrl.f0 < $ctrl.f0Table}"></div> -->

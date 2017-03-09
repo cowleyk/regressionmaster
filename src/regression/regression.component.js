@@ -56,11 +56,13 @@
         lineArr.unshift(1);
         xMatrix.push(lineArr);
       });
+      vm.xMatrix = xMatrix;
 
       let n = vm.matrixObj.allDataMatrix.length;
       let k = dependentObjArr.length;
       let p = k + 1;
       let cMatrix = math.inv(math.multiply(math.transpose(xMatrix), xMatrix));
+      vm.cMatrix = cMatrix;
       let xPrY = math.multiply(math.transpose(xMatrix), yMatrix);
       let bHatMatrix = math.multiply(cMatrix, xPrY);
       let sse = math.multiply(math.transpose(yMatrix),yMatrix) - math.multiply(math.transpose(bHatMatrix), math.multiply(math.transpose(xMatrix), yMatrix));
@@ -103,6 +105,7 @@
         sigSq: sigSq.toFixed(3),
         f0: f0.toFixed(3),
         fTable: fTable,
+        tTable: tTable,
         r2adj: 1-(sse/(n-p)/(sst/(n-1))).toFixed(3)
       };
 
@@ -117,7 +120,8 @@
             coeff: bHatMatrix[i][0].toFixed(3),
             seCoeff: Math.sqrt(sigSq*cMatrix[i][i]).toFixed(3),
             t: Math.abs(tzero).toFixed(3),
-            tTable: tTable
+            tTable: tTable,
+            modinput: 'Constant'
           };
         }
         else{
@@ -127,7 +131,8 @@
             coeff: bHatMatrix[i][0].toFixed(3),
             seCoeff: Math.sqrt(sigSq*cMatrix[i][i]).toFixed(3),
             t: Math.abs(tzero).toFixed(3),
-            tTable: ' '
+            tTable: ' ',
+            modinput: ''
           };
         }
         vm.varTableArr.push(coeffObj);
@@ -137,6 +142,27 @@
       vm.showOptions = false;
       vm.showBlurbs = true;
     }; // close vm.setSelection
+
+    vm.getPrediction = function(){
+      let x0Matrix = [['1']];
+      let modelY = 0;
+      vm.varTableArr.forEach(function(varObj){
+        if(varObj.modinput !== 'Constant'){
+          x0Matrix.push([varObj.modinput]);
+          modelY += varObj.coeff*parseFloat(varObj.modinput)
+        }
+        else{
+          modelY += parseFloat(varObj.coeff);
+        }
+      });
+      let matMultResult = math.multiply(math.multiply(math.transpose(x0Matrix), vm.cMatrix), x0Matrix);
+      let plusMinus = vm.regressionObj.tTable*Math.sqrt(vm.regressionObj.sigSq*(1+matMultResult[0][0]));
+      // &le;
+      vm.predictMinus = (modelY - plusMinus).toFixed(3);
+      vm.predictPlus = (modelY + plusMinus).toFixed(3);
+      vm.showPrediction = true;
+
+    }
 
     vm.dependentFilter = function(val){
       return val.name !== vm.independent;
